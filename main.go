@@ -36,8 +36,9 @@ func main() {
 }
 
 type Searcher struct {
-	CompleteWorks string
-	SuffixArray   *suffixarray.Index
+	CompleteWorks          string
+	CompleteWorksLowercase string
+	SuffixArray            *suffixarray.Index
 }
 
 func handleSearch(searcher Searcher) func(w http.ResponseWriter, r *http.Request) {
@@ -51,6 +52,10 @@ func handleSearch(searcher Searcher) func(w http.ResponseWriter, r *http.Request
 		results := searcher.Search(query[0])
 		buf := &bytes.Buffer{}
 		enc := json.NewEncoder(buf)
+		if len(results) == 0 {
+			enc.Encode([1]string{"Your search did not match any results"})
+			return
+		}
 		err := enc.Encode(results)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -68,12 +73,12 @@ func (s *Searcher) Load(filename string) error {
 		return fmt.Errorf("Load: %w", err)
 	}
 	s.CompleteWorks = string(dat)
-	s.SuffixArray = suffixarray.New(dat)
+	s.SuffixArray = suffixarray.New(bytes.ToLower(dat))
 	return nil
 }
 
 func (s *Searcher) Search(query string) []string {
-	idxs := s.SuffixArray.Lookup([]byte(query), -1)
+	idxs := s.SuffixArray.Lookup(bytes.ToLower([]byte(query)), -1)
 	results := []string{}
 	for _, idx := range idxs {
 		results = append(results, s.CompleteWorks[idx-250:idx+250])
