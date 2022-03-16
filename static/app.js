@@ -14,7 +14,8 @@ const Controller = {
     const table = document.getElementById("table-body");
     const rows = [];
     for (let result of results) {
-      rows.push(`<tr>${result}<tr/>`);
+      highlightedResult = result.replace(/hamlet/gi, "<mark>$&</mark>")
+      rows.push(`<tr>${highlightedResult}<tr/>`);
     }
     table.innerHTML = rows;
   },
