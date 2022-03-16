@@ -54,6 +54,7 @@ func handleSearch(searcher Searcher) func(w http.ResponseWriter, r *http.Request
 		enc := json.NewEncoder(buf)
 		if len(results) == 0 {
 			enc.Encode([1]string{"Your search did not match any results"})
+			w.Write(buf.Bytes())
 			return
 		}
 		err := enc.Encode(results)
