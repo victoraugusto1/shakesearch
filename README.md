@@ -1,3 +1,14 @@
+# Implemented features
+[x] Case sensitive search
+[x] Case insensitive search
+[x] Choose maximum number of results
+[x] Highlight matches on list of results
+[x] Adjust frontend
+[x] Validate inṕut fields on frontend
+[x] Validate input fields on backend
+[x] Multi-words search
+[ ] Handle misspelling
+
 # ShakeSearch
 
 Welcome to the Pulley Shakesearch Take-home Challenge! In this repository,
