@@ -3,7 +3,7 @@ const Controller = {
     ev.preventDefault()
     const form = document.getElementById("form")
     const data = Object.fromEntries(new FormData(form))
-    var url = `/search?q=${data.query}`
+    var url = `/search?q=${data.query}&maxResults=${data.maxResults}`
     if (data.caseSensitive != null) {
       url += `&caseSensitive=${data.caseSensitive}`
     }

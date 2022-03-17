@@ -11,15 +11,17 @@
 <body>
     <h1>Shakesearch</h1>
     <h3>Search for Shakespeare's works</h3>
-    <p>
+    <div>
         <form id="form">
-            <label for="query">Query</label>
-            <input type="text" id="query" name="query">
+            <label for="query">Search term</label>
+            <input type="text" id="query" name="query" required>
             <label for="caseSensitive">Case sensitive search?</label>
-            <input type="checkbox" id="caseSensitive" name="caseSensitive" value="true"> 
+            <input type="checkbox" id="caseSensitive" name="caseSensitive" value="true">
+            <label for="maxResults">Max number of results (leave empty for unlimited)</label>
+            <input type="text" id="maxResults" name="maxResults">
             <button type="submit">Search</button>
         </form>
-    </p>
+    </div>
     <div id="results">
     </div>
   <script src="app.js"></script>
