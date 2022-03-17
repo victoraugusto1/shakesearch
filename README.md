@@ -9,6 +9,8 @@
 - [x] Multi-words search
 - [ ] Handle misspelling
 
+The application is available on https://salty-beach-98632.herokuapp.com/
+
 # ShakeSearch
 
 Welcome to the Pulley Shakesearch Take-home Challenge! In this repository,
