@@ -1,13 +1,13 @@
 # Implemented features
-[x] Case sensitive search
-[x] Case insensitive search
-[x] Choose maximum number of results
-[x] Highlight matches on list of results
-[x] Adjust frontend
-[x] Validate inṕut fields on frontend
-[x] Validate input fields on backend
-[x] Multi-words search
-[ ] Handle misspelling
+- [x] Case sensitive search
+- [x] Case insensitive search
+- [x] Choose maximum number of results
+- [x] Highlight matches on list of results
+- [x] Adjust frontend
+- [x] Validate input fields on frontend
+- [x] Validate input fields on backend
+- [x] Multi-words search
+- [ ] Handle misspelling
 
 # ShakeSearch
 
