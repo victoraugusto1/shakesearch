@@ -36,9 +36,9 @@ func main() {
 }
 
 type Searcher struct {
-	CompleteWorks          string
-	CompleteWorksLowercase string
-	SuffixArray            *suffixarray.Index
+	CompleteWorks              string
+	CaseSensitiveSuffixArray   *suffixarray.Index
+	CaseInsensitiveSuffixArray *suffixarray.Index
 }
 
 func handleSearch(searcher Searcher) func(w http.ResponseWriter, r *http.Request) {
@@ -49,7 +49,9 @@ func handleSearch(searcher Searcher) func(w http.ResponseWriter, r *http.Request
 			w.Write([]byte("missing search query in URL params"))
 			return
 		}
-		results := searcher.Search(query[0])
+
+		caseSensitive := checkCaseSensitive(r)
+		results := searcher.Search(query[0], caseSensitive)
 		buf := &bytes.Buffer{}
 		enc := json.NewEncoder(buf)
 		if len(results) == 0 {
@@ -74,15 +76,33 @@ func (s *Searcher) Load(filename string) error {
 		return fmt.Errorf("Load: %w", err)
 	}
 	s.CompleteWorks = string(dat)
-	s.SuffixArray = suffixarray.New(bytes.ToLower(dat))
+	s.CaseInsensitiveSuffixArray = suffixarray.New(bytes.ToLower(dat))
+	s.CaseSensitiveSuffixArray = suffixarray.New(dat)
 	return nil
 }
 
-func (s *Searcher) Search(query string) []string {
-	idxs := s.SuffixArray.Lookup(bytes.ToLower([]byte(query)), -1)
+func (s *Searcher) Search(query string, caseSensitive bool) []string {
+	idxs := s.getSearchIndexes(query, caseSensitive)
 	results := []string{}
 	for _, idx := range idxs {
 		results = append(results, s.CompleteWorks[idx-250:idx+250])
 	}
 	return results
+}
+
+func (s *Searcher) getSearchIndexes(query string, caseSensitive bool) []int {
+	if caseSensitive == true {
+		return s.CaseSensitiveSuffixArray.Lookup([]byte(query), -1)
+	}
+	lowercaseByteQuery := bytes.ToLower([]byte(query))
+	return s.CaseInsensitiveSuffixArray.Lookup(lowercaseByteQuery, -1)
+}
+
+func checkCaseSensitive(r *http.Request) bool {
+	_, err := r.URL.Query()["caseSensitive"]
+	caseSensitive := true
+	if !err {
+		caseSensitive = false
+	}
+	return caseSensitive
 }

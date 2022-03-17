@@ -9,21 +9,19 @@
 </head>
 
 <body>
+    <h1>Shakesearch</h1>
+    <h3>Search for Shakespeare's works</h3>
     <p>
         <form id="form">
             <label for="query">Query</label>
             <input type="text" id="query" name="query">
+            <label for="caseSensitive">Case sensitive search?</label>
+            <input type="checkbox" id="caseSensitive" name="caseSensitive" value="true"> 
             <button type="submit">Search</button>
         </form>
     </p>
     <div id="results">
-
     </div>
-    <p>
-        <table id="table">
-          <tbody id="table-body"></tbody>
-        </table>
-    </p>
   <script src="app.js"></script>
 </body>
 

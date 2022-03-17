@@ -3,10 +3,14 @@ const Controller = {
     ev.preventDefault()
     const form = document.getElementById("form")
     const data = Object.fromEntries(new FormData(form))
-    const response = fetch(`/search?q=${data.query}`).then((response) => {
+    var url = `/search?q=${data.query}`
+    if (data.caseSensitive != null) {
+      url += `&caseSensitive=${data.caseSensitive}`
+    }
+    const response = fetch(url).then((response) => {
       response.json().then((results) => {
         Controller.updateHtml(results)
-        Controller.highlightResults(data.query)
+        Controller.highlightResults(data.query, data.caseSensitive)
       });
     });
   },
@@ -23,13 +27,15 @@ const Controller = {
     })
   },
 
-  highlightResults: (query) => {
+  highlightResults: (query, caseSensitive) => {
     const rawResults = document.querySelectorAll("pre")
-    const matcher = new RegExp(query, "gi")
-    rawResults.forEach( function(element) {
-        element.innerHTML = element.innerHTML.replace(matcher, "<mark>$&</mark>")
-      }
-    )
+    var matcher = new RegExp(query, "g")
+    if (caseSensitive == undefined) {
+      matcher = new RegExp(query, "gi")
+    }
+    rawResults.forEach(function(element) {
+      element.innerHTML = element.innerHTML.replace(matcher, "<mark>$&</mark>")
+    })
   }
 };
 
